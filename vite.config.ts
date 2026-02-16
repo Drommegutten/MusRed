@@ -1,13 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+import path from "path"
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: [['babel-plugin-react-compiler']],
-      },
-    }),
-  ],
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      "@interfaces": path.resolve(__dirname, "src/interfaces"),
+      "@contexts": path.resolve(__dirname, "src/contexts"),
+      "@components": path.resolve(__dirname, "src/components")
+    }
+  }
 })
