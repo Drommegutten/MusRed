@@ -12,17 +12,28 @@ export const program = defineType({
             type: "string",
             validation: (Rule) => Rule.required().error('Title is required')
         }),
+
         defineField({
             name: "beskrivelse",
             title: "Beskrivelse av program",
-            type: "text",
+            type: "array",
+            of: [
+                {
+                    type: "block",
+                    styles: [{ title: "Normal", value: "normal" }],
+                    lists: [],
+                },
+            ],
             validation: (Rule) => Rule.required().error('Title is required')
         }),
         defineField({
             name: "bilde",
             title: "Bilde for program",
             type: "image",
-            validation: (Rule) => Rule.required().error('Title is required')
+            validation: (Rule) => Rule.required().error('Title is required'),
+            options: {
+                hotspot: true,
+            },
         }),
         defineField({
             name: 'Oppstart',
@@ -46,6 +57,25 @@ export const program = defineType({
                 description: "Folka som starta  programmet",
                 }
             ],    
+        }),
+        {
+        name: "slug",
+        type: "slug",
+        options: {
+            source: "programNavn",
+            maxLength: 96
+        }
+        },
+        defineField({
+            name: "aktiveMedlemmer",
+            title: "Aktive medlemmer i programmet",
+            type: "array",
+            of: [
+                {
+                    type: "reference",
+                    to: [{type: "tidligereMedlemmer"}],
+                }
+            ]
         })
     ],
 })

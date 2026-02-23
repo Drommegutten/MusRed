@@ -12,7 +12,8 @@
               asset->{
                   url
               }
-          }
+          },
+          slug
       },
       tattOpp,
       forlot,

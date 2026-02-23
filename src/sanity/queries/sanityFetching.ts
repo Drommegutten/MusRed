@@ -11,3 +11,4 @@ export const getMedlemmerInfo = async (): Promise<Medlem[]> => {
 export const getProgrammerInfo = async (): Promise<Program[]> => {
   return client.fetch<Program[]>(ProgrammerQuery);
 }
+

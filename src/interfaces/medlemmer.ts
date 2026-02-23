@@ -12,6 +12,9 @@
                 url: string;
             }
         };
+        slug: {
+            current: string;
+        }
 
     };
     tattOpp: string;

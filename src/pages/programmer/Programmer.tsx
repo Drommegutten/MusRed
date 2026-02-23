@@ -1,10 +1,12 @@
 ﻿import React, { useEffect, useState } from "react";
 import type { Program } from "../../interfaces/programmer";
 import { getProgrammerInfo } from "../../sanity/queries/sanityFetching";
+import { useNavigate } from "react-router-dom";
 
 function Programmer() {
   const [programmerData, setProgrammerData] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
       const fetchData = async () => {
@@ -24,12 +26,13 @@ function Programmer() {
     console.log(programmerData);
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen m-10">
+        <div className="flex flex-col items-center h-screen m-10 ">
             <h1 className="text-4xl font-bold mb-4">Programmer</h1>
-            <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-col items-center justify-center overflow-auto">
+            <div className="self-start grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-col items-center justify-center overflow:hidden">
                 {programmerData.map((program, index) => (
-                    <div key={index} className="p-0 flex bg-white shadow-md ">
-                        <img src={program.bilde.asset.url} alt={program.programNavn} className="w-full max-h-full object-cover" />
+                    <div key={index} className="p-0 flex bg-white shadow-md w-full max-h-70"
+                        onClick={() => navigate(`/programmer/${program.slug.current}`)}>
+                        <img src={program.bilde.asset.url} alt={program.programNavn} className=" object-cover" />
                     </div>
                 ))}
                 
