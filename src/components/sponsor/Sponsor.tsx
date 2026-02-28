@@ -1,7 +1,7 @@
-﻿import BackInBlack from "../../assets/sponsorBilder/BackInBlack.png";
-import Dahls from "../../assets/sponsorBilder/Dahls.png";
+﻿import BackInBlack from "../../assets/sponsorBilder/backInBlack.png";
+import Dahls from "../../assets/sponsorBilder/dahls.png";
 import fernet from "../../assets/sponsorBilder/fernet.png";
-import RaysBar from "../../assets/sponsorBilder/RaysBar.png";
+import RaysBar from "../../assets/sponsorBilder/raysBar.png";
 import samfLogo from "../../assets/samfLogo.png";
 
 function Sponsor() {
