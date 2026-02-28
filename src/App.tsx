@@ -5,25 +5,26 @@ import Home from './pages/home/Home';
 import Sponsor from './components/sponsor/Sponsor';
 import Programmer from "./pages/programmer/Programmer";
 import ProgramSide from "./pages/programmer/programSide/ProgramSide";
-import { useState } from 'react';
-
-
-//import Home from './pages/Home';
-//import About from './pages/About';
-// //import Lore from './pages/Lore';
+import { useEffect, useState } from 'react';
+import './App.css';
 
 function AppContent() {
 
   const [showNav, setShowNavbar] = useState(false);
   
   const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [location.pathname]);
+
   const showSponsor = 
     location.pathname === "/aktive-og-panger" || 
     location.pathname === "/programmer" || 
     location.pathname.startsWith("/programmer/");
 
   return (
-    <div className={`flex flex-col min-h-screen ${showNav ? 'pt-20' : ''}`}>
+    <div className={`flex flex-col min-h-screen $`}>
       {<Navbar showNav={showNav} />}
       <Routes>
         <Route path="/" element={<Home

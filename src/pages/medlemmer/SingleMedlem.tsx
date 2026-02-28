@@ -1,14 +1,12 @@
-﻿import type { Medlem } from "../../interfaces/medlemmer";
+﻿import { useEffect, useRef, useState } from "react";
+import type { Medlem } from "../../interfaces/medlemmer";
 import slimeFunk from "../../assets/FUNK.png";
-import PANG from "../../assets/PANG.png";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 type Props = {
   medlem: Medlem
   index: number
-  opptakDekom: string
-  varPang: boolean;
 }
 
 function getSemester(dateString: string): string {
@@ -16,58 +14,92 @@ function getSemester(dateString: string): string {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
 
-  const semester = month >= 7 ? "Høst" : "Vår"
+  const semester = month >= 7 ? "HØST" : "VÅR"
 
   return `${semester} ${year}`
 }
 
 function SingleMedlem({medlem, index}: Props) {
+    const cardRef = useRef<HTMLDivElement | null>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+      const element = cardRef.current;
+
+      if (!element) {
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const [entry] = entries;
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+          else {
+            setIsVisible(false);
+          }
+        },
+        { threshold: 0.1 }
+      );
+
+      observer.observe(element);
+
+      return () => observer.disconnect();
+    }, []);
 
     const opptakDekom = getSemester(medlem.tattOpp);
     const forlotDekom = getSemester(medlem.forlot);
     const navigate = useNavigate();
-
+    if (!medlem) {
+      return null
+    }
     return (
-    <div key={index} className="mb-4 p-4 border rounded-lg bg-white">
+    <div
+      ref={cardRef}
+      className={`mb-4 p-4 border h-110 bg-white transition-all duration-600 ease-out ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-0"
+      }`}
+      style={{ transitionDelay: `${40}ms` }}
+    >
 
             <h1 className="text-3xl font-semibold text-center"> {medlem.medlemNavn}</h1>
 
             <div className= "grid grid-cols-1 md:grid-cols-3 gap-4 mt-4"> 
-              <div className="align-middle flex flex-col items-center justify-center relative shadow"> 
-                <div className="object-top max-h-100">
-                
+              <div className="align-middle flex flex-col items-center justify-center relative"> 
+                <div> 
                   {medlem.varFunk ? 
                   (
-                    <div> 
-                        
-                        <img src={medlem.medlemBilde.asset.url} alt={medlem.medlemNavn} className="max-h-70 w-100 object-cover"/>
-                        <div className="h-33 w-100 z-10 overflow-hidden bottom-3 relative">
-                            <img src={slimeFunk} alt="Slime Funk" className="object-cover object-top h-33 w-100 "/>
+                    <div className="flex flex-col items-center justify-center h-80"> 
+                        <img src={medlem.medlemBilde.asset.url} alt={medlem.medlemNavn} className="max-h-50 w-80 object-top object-cover"/>
+                        <div className="h-33 w-full z-10 overflow-hidden bottom-3 relative">
+                            <img src={slimeFunk} alt="Slime Funk" className="object-cover object-top h-37 w-full "/>
                         </div>
                     </div>
                   ) : 
-                  <div>
-                    <img src={medlem.medlemBilde.asset.url} alt={medlem.medlemNavn} className="h-70 w-100 mb-6 object-cover"/>
+                  <div className="flex flex-col items-center justify-center h-80">
+                    <img src={medlem.medlemBilde.asset.url} alt={medlem.medlemNavn} className="max-h-70 w-80 object-top object-cover"/>
                   </div>
                   }
-                </div>
+                  </div>
 
                 <div className="flex flex-row"> 
                   <h2 className="mr-10 text-2xl">{opptakDekom} </h2>
-                  <h2 className="text-2xl">{forlotDekom} </h2>
+                  <h2 className="text-2xl mb-3">{forlotDekom} </h2>
                 </div>
-
               </div>
+
 
               <div className="flex flex-col col-span-2 ">
                   <img 
                     src={medlem.programTilhorighet.bilde.asset.url} 
+              
                     alt={medlem.programTilhorighet.programNavn} 
-                    className="w-100% max-h-100 object-cover"
+                    className="w-100% max-h-70 object-contain cursor-pointer"
                     onClick={() => navigate(`/programmer/${medlem.programTilhorighet.slug.current}`)}
                   />
                   {medlem.tattOppAv?.medlemNavn && (
-                                                      <div className="flex flex-row items-center mr-10 justify-end">
+                                                      <div className="flex flex-row items-center mb-5 mr-5 justify-end">
                                                         
                                                         <h2 className="mr-10">
                                                           Tatt opp av:

@@ -1,3 +1,4 @@
-﻿.NavElement {
-  
+﻿.navElement:hover {
+  transform: translateY(-0.25rem);
+  font-size: larger;
 }

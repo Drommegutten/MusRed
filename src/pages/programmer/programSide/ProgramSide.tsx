@@ -3,15 +3,18 @@ import { useEffect, useState } from "react"
 import { client } from "../../../sanity/lib/client"
 import type { Program } from "../../../interfaces/programmer";
 import { getProgrammerInfoSlug } from "../../../queries/programSlug";
+import { getProgrammerInfo } from "../../../sanity/queries/sanityFetching";
+import Carousel from "../../../components/carousel/Carousel";
 
 
 function ProgramSide() {
     const { slug } = useParams<{ slug: string }>()
     const [programData, setProgramData] = useState<Program | null>(null)
+    const [programmerData, setProgrammerData] = useState<Program[]>([]);
 
     const [hidden, setHidden] = useState(false)
 
-     useEffect(() => {
+    useEffect(() => {
         if (!slug) return
         client
             .fetch(getProgrammerInfoSlug(slug))
@@ -19,15 +22,36 @@ function ProgramSide() {
     }, [slug])
 
     useEffect(() => {
-  const handleScroll = () => {
-    setHidden(window.scrollY > 300)
-  }
+        const fetchData = async () => {
+        try {
+            const data = await getProgrammerInfo();
+            setProgrammerData(data);
+        } catch (error) {
+            console.error("Failed to fetch programmer:", error);
+            }
+        };
+    
+        fetchData();
+    }, []);
+    
+    const slides = programmerData.map((program) => ({
+        image: program.bilde.asset.url,
+        title: program.programNavn,
+        slug: program.slug.current
+      }));
+    
+    
 
-  window.addEventListener("scroll", handleScroll)
-  return () => window.removeEventListener("scroll", handleScroll)
-}, [])
 
-    console.log(programData)
+    useEffect(() => {
+        const handleScroll = () => {
+            setHidden(window.scrollY > 300)
+        }
+
+    window.addEventListener("scroll", handleScroll)
+        return () => window.removeEventListener("scroll", handleScroll)
+    }, [])
+
 
     return (
         <div className="w-screen">
@@ -86,6 +110,8 @@ function ProgramSide() {
                         </div>
                     </div>
             )}
+        <Carousel slides={slides}/>
+
         </div>
     )
 };
