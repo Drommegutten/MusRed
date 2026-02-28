@@ -19,7 +19,7 @@ function getSemester(dateString: string): string {
   return `${semester} ${year}`
 }
 
-function SingleMedlem({medlem, index}: Props) {
+function SingleMedlem({medlem}: Props) {
     const cardRef = useRef<HTMLDivElement | null>(null);
     const [isVisible, setIsVisible] = useState(false);
 

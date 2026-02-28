@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import type { Program } from "../../interfaces/programmer";
 import { getProgrammerInfo } from "../../sanity/queries/sanityFetching";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,13 @@ function Programmer() {
       setShowElements(true);
     }, []); 
 
-    console.log(programmerData);
+    if (loading) {
+      return (
+        <div className="flex flex-col items-center h-screen mt-30 mb-30 mr-10 ml-10">
+          <h1 className="text-4xl font-bold mb-4">LOADER...</h1>
+        </div>
+      );
+    }
 
     return (
         <div className={`flex flex-col items-center h-screen mt-30 mb-30 mr-10 ml-10 transition-opacity duration-700 ${showElements ? "opacity-100" : "opacity-0"}`}>
