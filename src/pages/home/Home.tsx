@@ -10,7 +10,6 @@ import type { Program } from "../../interfaces/programmer";
 function Home({onCarouselClick }: {onCarouselClick: () => void}) {
     const [hover, setHover] = React.useState(false);
     const [showElements, setShowElements] = useState(false);
-
     useEffect(() => {
       setShowElements(true);
     }, []);
