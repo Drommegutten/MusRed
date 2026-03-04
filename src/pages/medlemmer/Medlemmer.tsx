@@ -6,11 +6,10 @@ import  SingleMedlem  from "./SingleMedlem"
 
 function Medlemmer() {
   const [medlemmerData, setMedlemmerData] = useState<Medlem[]>([]);
-  const [showTitle, setShowTitle] = useState(false);
+  const [showElements, setShowElements] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setShowTitle(true);
-  }, []);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,20 +19,29 @@ function Medlemmer() {
       } catch (error) {
         console.error("Failed to fetch medlemmer:", error);
       }
+      finally {
+        setLoading(false);
+      }
     };
-
     fetchData();
   }, []);
 
-  console.log("Medlemmer data:", medlemmerData);
+  useEffect(() => {
+    if (!loading) {
+      setShowElements(true);
+    }
+  }, [loading]);
+
+  if (loading) {
+    return <div className="w-screen min-h-screen" />;
+  }
 
   
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-full mt-30">
+    <div className={`flex flex-col items-center justify-center w-screen h-full mt-30 transition-opacity duration-1000 ${showElements ? "opacity-100" : "opacity-0"}`}>
 
-      <h1 className={`text-4xl font-bold transition-all duration-700 ease-out ${
-                showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y"}`}>
+      <h1 className={`text-4xl font-bold transition-all duration-700 ease-out `}>
         AKTIVE OG PANG I MUSRED
       </h1>
 

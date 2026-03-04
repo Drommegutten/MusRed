@@ -76,6 +76,11 @@ export const program = defineType({
                     to: [{type: "tidligereMedlemmer"}],
                 }
             ]
+        }),
+        defineField({
+            name:"linkTil",
+            title: "Link til program",
+            type: "url"
         })
     ],
 })
