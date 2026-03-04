@@ -7,6 +7,10 @@ import Programmer from "./pages/programmer/Programmer";
 import ProgramSide from "./pages/programmer/programSide/ProgramSide";
 import { useEffect, useState } from 'react';
 import './App.css';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+
+const queryClient = new QueryClient()
+
 
 function AppContent() {
 
@@ -42,9 +46,11 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <AppContent />
+      </Router>
+    </QueryClientProvider>
   );
 }
 

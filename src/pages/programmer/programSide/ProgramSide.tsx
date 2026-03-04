@@ -3,16 +3,15 @@ import { useEffect, useState } from "react"
 import { client } from "../../../sanity/lib/client"
 import type { Program } from "../../../interfaces/programmer";
 import { getProgrammerInfoSlug } from "../../../queries/programSlug";
-import { getProgrammerInfo } from "../../../sanity/queries/sanityFetching";
 import Carousel from "../../../components/carousel/Carousel";
 import "./programSide.css"
 import RRLogo from "../../../assets/RR_logo.png"
+import { useProgrammer } from "../../../hooks/useProgrammer";
 
 
 function ProgramSide() {
     const { slug } = useParams<{ slug: string }>()
     const [programData, setProgramData] = useState<Program | null>(null)
-    const [programmerData, setProgrammerData] = useState<Program[]>([]);
 
     const [hidden, setHidden] = useState(false)
 
@@ -23,24 +22,13 @@ function ProgramSide() {
             .then(setProgramData)
     }, [slug])
 
-    useEffect(() => {
-        const fetchData = async () => {
-        try {
-            const data = await getProgrammerInfo();
-            setProgrammerData(data);
-        } catch (error) {
-            console.error("Failed to fetch programmer:", error);
-            }
-        };
-    
-        fetchData();
-    }, []);
-    
-    const slides = programmerData.map((program) => ({
+    const { data: programmerData } = useProgrammer();
+        
+    const slides = programmerData?.map((program) => ({
         image: program.bilde.asset.url,
         title: program.programNavn,
-        slug: program.slug.current
-      }));
+        slug: program.slug.current,
+    }));
     
     
 

@@ -14,10 +14,10 @@ interface CarouselProps {
 }
 
 function Carousel({ slides }: CarouselProps) {
+
   const navigate = useNavigate()
 
-  if (!slides || slides.length === 0) return null; // or a loader
-  console.log(slides)
+  if (!slides || slides.length === 0) return null;
 
   return (
     <Swiper
