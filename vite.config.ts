@@ -11,5 +11,9 @@ export default defineConfig({
       "@contexts": path.resolve(__dirname, "src/contexts"),
       "@components": path.resolve(__dirname, "src/components")
     }
+  },
+  base: '/', 
+  build: {
+    outDir: "dist"
   }
 })

@@ -1,0 +1,6 @@
+﻿Todo: 
+
+– Fikse medlemsoversikt på programmer
+– Legge til Om Musred
+– Aktive og Pang burde bli kulere 
+– Caching! 

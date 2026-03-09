@@ -12,6 +12,7 @@
     aktiveMedlemmer: AktiveMedlemmer[];
     startaAv: StartaAv[];
     Oppstart: string;
+    linkTil: string;
 }
 
 interface beskrivelseBlock {

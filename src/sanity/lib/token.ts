@@ -1,5 +1,5 @@
-﻿export const token = import.meta.env.VITE_SANITY_API_READ_TOKEN;
+﻿export const tokenWrite = import.meta.env.VITE_SANITY_API_WRITE_TOKEN;
 
-if (!token) {
-  throw new Error("Missing SANITY_API_READ_TOKEN");
+if (!tokenWrite) {
+  throw new Error("Missing SANITY_API_WRITE_TOKEN");
 }

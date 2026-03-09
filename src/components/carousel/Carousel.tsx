@@ -3,21 +3,14 @@ import { Autoplay, Pagination, EffectCoverflow } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import { useNavigate } from "react-router-dom"
+import type { Carousel as CarouselType } from "../../interfaces/carousel";
 
-interface Slide {
-  image: string;
-  slug: string;
-}
 
-interface CarouselProps {
-  slides: Slide[];
-}
+function Carousel({ slides }: CarouselType) {
 
-function Carousel({ slides }: CarouselProps) {
   const navigate = useNavigate()
 
-  if (!slides || slides.length === 0) return null; // or a loader
-  console.log(slides)
+  if (!slides || slides.length === 0) return null;
 
   return (
     <Swiper

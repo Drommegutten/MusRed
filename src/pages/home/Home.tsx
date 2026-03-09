@@ -2,9 +2,8 @@
 import LogoDollar from "../../assets/1.png"
 import React from "react";
 import Carousel from "../../components/carousel/Carousel";
-import { getProgrammerInfo } from "../../sanity/queries/sanityFetching";
 import { useEffect, useState } from "react";
-import type { Program } from "../../interfaces/programmer";
+import { useProgrammer } from "../../hooks/useProgrammer";
 
 
 function Home({onCarouselClick }: {onCarouselClick: () => void}) {
@@ -14,26 +13,13 @@ function Home({onCarouselClick }: {onCarouselClick: () => void}) {
       setShowElements(true);
     }, []);
 
-    const [programmerData, setProgrammerData] = useState<Program[]>([]);
+    const { data: programmerData } = useProgrammer();
     
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const data = await getProgrammerInfo();
-          setProgrammerData(data);
-        } catch (error) {
-          console.error("Failed to fetch programmer:", error);
-        }
-      };
-    
-        fetchData();
-      }, []);
-
-      const slides = programmerData.map((program) => ({
-        image: program.bilde.asset.url,
-        title: program.programNavn,
-        slug: program.slug.current,
-      }));
+    const slides = programmerData?.map((program) => ({
+      image: program.bilde.asset.url,
+      title: program.programNavn,
+      slug: program.slug.current,
+    })) ?? [];
 
     return (
         <div className={`flex flex-col items-center h-screen justify-center transition-opacity duration-1000 
