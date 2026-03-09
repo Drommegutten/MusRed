@@ -19,7 +19,7 @@ function Home({onCarouselClick }: {onCarouselClick: () => void}) {
       image: program.bilde.asset.url,
       title: program.programNavn,
       slug: program.slug.current,
-    }));
+    })) ?? [];
 
     return (
         <div className={`flex flex-col items-center h-screen justify-center transition-opacity duration-1000 

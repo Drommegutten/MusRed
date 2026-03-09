@@ -1,47 +1,57 @@
-﻿import { useEffect, useState } from "react";
-import { getMedlemmerInfo } from "../../sanity/queries/sanityFetching";
-import  SingleMedlem  from "./SingleMedlem"
-import { useQuery } from "@tanstack/react-query";
-import { useMedlemmer } from "../../hooks/useMedlemmer";
+﻿import { useMedlemmer } from "../../hooks/useMedlemmer";
+import SingleMedlem from "./SingleMedlem";
+import { useRef, useEffect } from "react";
 
+function TidligereMedlemmer() {
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useMedlemmer(10);
 
-function Medlemmer() {
-  const [showElements, setShowElements] = useState(false);
-
-  const { data, isLoading} = useMedlemmer();
-
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!isLoading && data) {
-      setShowElements(true);
-    }
-  }, [isLoading, data]);
+    if (!hasNextPage || !loadMoreRef.current) return;
 
-  if (isLoading) {
-    return <div className="w-screen min-h-screen" />;
-  }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            fetchNextPage();
+          }
+        });
+      },
+      { rootMargin: "200px" } // start fetching a bit before reaching bottom
+    );
+
+    observer.observe(loadMoreRef.current);
+
+    return () => observer.disconnect();
+  }, [hasNextPage, fetchNextPage]);
+
+  if (isLoading) return <div className="w-screen min-h-screen" />;
 
   return (
-    <div
-      className={`flex flex-col items-center justify-center w-screen h-full mt-30 transition-opacity duration-1000 ${
-        showElements ? "opacity-100" : "opacity-0"
-      }`}
-    >
-      <h1 className="text-4xl font-bold transition-all duration-700 ease-out">
-        AKTIVE OG PANG I MUSRED
-      </h1>
+    <div className="flex flex-col items-center mt-30">
+      <h1 className="text-4xl font-bold mb-4 text-center">MUSREDDERE</h1>
 
-      <div className="background-gradient p-6">
-        {data?.map((medlem, index) => (
-          <SingleMedlem
-            key={index} 
-            medlem={medlem}
-            index={index}
-          />
-        ))}
+      <div className="background-gradient p-6 w-full">
+        {data?.pages.map((page, pageIndex) =>
+          page.map((medlem: any, index: number) => (
+            <SingleMedlem key={`${pageIndex}-${index}`} medlem={medlem} index={index} />
+          ))
+        )}
       </div>
+
+      {/* Sentinel element to trigger fetching more */}
+      <div ref={loadMoreRef} className="h-1" />
+
+      {isFetchingNextPage && <div className="text-center p-2">Loading more...</div>}
     </div>
   );
 }
 
-export default Medlemmer;
+export default TidligereMedlemmer;

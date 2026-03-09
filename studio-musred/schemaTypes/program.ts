@@ -1,5 +1,4 @@
 ﻿import {defineField, defineType} from 'sanity'
-import { tidligereMedlemmer } from './tidligereMedlemmer'
 
 export const program = defineType({
     name: "program",

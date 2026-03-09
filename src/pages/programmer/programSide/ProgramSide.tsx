@@ -8,7 +8,6 @@ import "./programSide.css"
 import RRLogo from "../../../assets/RR_logo.png"
 import { useProgrammer } from "../../../hooks/useProgrammer";
 
-
 function ProgramSide() {
     const { slug } = useParams<{ slug: string }>()
     const [programData, setProgramData] = useState<Program | null>(null)
@@ -28,11 +27,8 @@ function ProgramSide() {
         image: program.bilde.asset.url,
         title: program.programNavn,
         slug: program.slug.current,
-    }));
+    })) ?? [];
     
-    
-
-
     useEffect(() => {
         const handleScroll = () => {
             setHidden(window.scrollY > 300)

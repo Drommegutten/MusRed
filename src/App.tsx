@@ -8,6 +8,7 @@ import ProgramSide from "./pages/programmer/programSide/ProgramSide";
 import { useEffect, useState } from 'react';
 import './App.css';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import Forum from './pages/forum/Forum';
 
 const queryClient = new QueryClient()
 
@@ -26,6 +27,7 @@ function AppContent() {
     location.pathname === "/aktive-og-panger" || 
     location.pathname === "/programmer" || 
     location.pathname.startsWith("/programmer/");
+    location.pathname.startsWith("/forum");
 
   return (
     <div className={`flex flex-col min-h-screen $`}>
@@ -38,6 +40,7 @@ function AppContent() {
         <Route path="/aktive-og-panger" element={<Medlemmer />} />
         <Route path="/programmer" element={<Programmer/>} />
         <Route path="/programmer/:slug" element={<ProgramSide/>} />
+        <Route path="/forum" element={<Forum/>} />
       </Routes>
       {showSponsor && <Sponsor />}
     </div>
